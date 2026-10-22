@@ -13,7 +13,7 @@ require_once dirname( __DIR__ ) . '/smp-contributor-network.php';
 $page   = new \SMP\ContributorNetwork\AdminDashboard\AdminPage();
 $failed = 0;
 
-foreach ( [ 'overview', 'update-center', 'hexa-core' ] as $tab ) {
+foreach ( [ 'overview', 'program', 'pages', 'update-center', 'hexa-core' ] as $tab ) {
     ob_start();
     $page->render_tab( $tab );
     $html = (string) ob_get_clean();

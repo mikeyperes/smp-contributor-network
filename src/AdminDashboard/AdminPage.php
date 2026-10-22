@@ -20,12 +20,14 @@ final class AdminPage implements ModuleInterface {
     /** @var array<string,array<int,string>> */
     private const GROUPS = [
         'Overview'        => [ 'overview' ],
+        'Program'         => [ 'program', 'pages' ],
         'Operations'      => [ 'update-center' ],
         'WordPress Admin' => [ 'hexa-core' ],
     ];
 
     public function register(): void {
         add_action( 'admin_menu', [ $this, 'add_menu' ] );
+        add_action( 'admin_init', [ $this, 'save_program_form' ] );
 
         AjaxActionRegistry::create(
             [
@@ -37,6 +39,13 @@ final class AdminPage implements ModuleInterface {
                 self::TAB_ACTION => [ 'callback' => [ $this, 'ajax_tab' ] ],
             ]
         );
+    }
+
+    /** The Program tab's settings form posts back to the page; Core's Fields form saves it. */
+    public function save_program_form(): void {
+        if ( PluginMetadata::ADMIN_PAGE_SLUG === ( $_GET['page'] ?? '' ) && current_user_can( PluginMetadata::ADMIN_CAPABILITY ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            \Hexa\PluginCore\Fields\Form::head();
+        }
     }
 
     public function add_menu(): void {
@@ -54,6 +63,8 @@ final class AdminPage implements ModuleInterface {
     public function tabs(): array {
         $registry = ( new TabRegistry() )
             ->add( new TabDefinition( 'overview', 'Overview', [ OverviewTab::class, 'render' ] ) )
+            ->add( new TabDefinition( 'program', 'Program', [ ProgramTab::class, 'render' ] ) )
+            ->add( new TabDefinition( 'pages', 'Pages', [ PagesTab::class, 'render' ] ) )
             ->add( new TabDefinition( 'update-center', 'Update Center', [ \SMP\ContributorNetwork\Updates\UpdateCenter::class, 'render' ] ) );
 
         return (array) apply_filters( PluginMetadata::HOOK_PREFIX . '_dashboard_tabs', $registry->all() );

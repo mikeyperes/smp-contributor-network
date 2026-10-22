@@ -1,6 +1,6 @@
-# Council pieces still in Verified Profiles
+# Council pieces moved from Verified Profiles
 
-Her Forward's Leadership Council runs on `smp-verified-profiles`, which calls it the "contributor network program". These pieces belong in this plugin. They have not been moved yet.
+Moved in 1.1.0 (Verified Profiles 8.3.0 removed them). Kept as the record of where each piece came from.
 
 ## Program settings
 

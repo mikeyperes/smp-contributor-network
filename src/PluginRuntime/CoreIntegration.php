@@ -8,6 +8,10 @@ use Hexa\PluginCore\CoreRuntime\PluginContext;
 use Hexa\PluginCore\WpAdminTabs\CoreTabConfig;
 use Hexa\PluginCore\WpAdminTabs\CoreTabModule;
 use SMP\ContributorNetwork\AdminDashboard\AdminPage;
+use SMP\ContributorNetwork\Council\CouncilCheckout;
+use SMP\ContributorNetwork\Council\CouncilFields;
+use SMP\ContributorNetwork\Council\CouncilShortcodes;
+use SMP\ContributorNetwork\Pages\PagesModule;
 use SMP\ContributorNetwork\Updates\UpdateCenter;
 
 final class CoreIntegration {
@@ -37,6 +41,10 @@ final class CoreIntegration {
         );
 
         self::$bootstrap
+            ->add_module( new CouncilFields() )
+            ->add_module( new CouncilShortcodes() )
+            ->add_module( new CouncilCheckout() )
+            ->add_module( new PagesModule() )
             ->add_module( new AdminPage() )
             ->add_module( new UpdateCenter() )
             ->add_module(
