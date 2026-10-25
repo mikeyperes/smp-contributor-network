@@ -72,6 +72,10 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 
 ## Changelog
 
+### 1.3.1
+
+- Bundles Hexa WP Core 3.41.0.
+
 ### 1.3.0
 
 - Become a Contributor and Contributor Login default texts rewritten with HWS Base Tools' building blocks; each links to the other, and the Editorial Guidelines link shows only when that page exists.
