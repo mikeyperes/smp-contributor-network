@@ -20,6 +20,8 @@ final class PagesModule implements ModuleInterface {
     public function register(): void {
         add_action( 'init', static fn() => add_shortcode( 'smp_contributor_network_page_template', [ self::class, 'render' ] ), 20 );
         add_action( 'init', static fn() => add_shortcode( 'smp_contributor_login', [ self::class, 'login_form' ] ), 20 );
+        // Other plugins' page links ([hws_page_link], [hws_if page]) find this plugin's pages through Hexa WP Core.
+        add_filter( 'hexa_site_structure_page_id', static fn( $id, string $key ): int => (int) $id > 0 ? (int) $id : PageTypes::page_id( $key ), 20, 2 );
         if ( defined( 'WP_CLI' ) && WP_CLI && class_exists( '\WP_CLI' ) ) {
             \WP_CLI::add_command( 'smp-contributor-pages ensure', static function (): void {
                 foreach ( array_keys( PageTypes::all() ) as $key ) {

@@ -53,6 +53,11 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 - **Use:** `[smp_contributor_login]` (inside `[smp_contributor_network_page_template type="contributor_login"]`); `wp smp-contributor-pages ensure` publishes every missing Contributor Network page.
 - **Code:** `src/Pages/PageTypes.php`, `src/Pages/PagesModule.php`, `src/Pages/templates/contributor_login.html`.
 
+### Page links from other plugins
+
+- **What:** HWS Base Tools and SMP Publication Integration pages can link to Become a Contributor and Contributor Login with  and .
+- **Code:**  ( filter).
+
 ## Internals
 
 - Admin page with Core tabs in groups: Overview; Program (Program, Pages); Operations (Update Center); Hexa Core. Filters `smp_contributor_network_dashboard_tabs` and `smp_contributor_network_render_dashboard_tab`; a tab loads only when opened (`src/AdminDashboard/AdminPage.php`).
@@ -66,6 +71,12 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 `wp eval-file tests/boot-smoke.php` boots the plugin without activating it and renders every tab.
 
 ## Changelog
+
+### 1.3.0
+
+- Become a Contributor and Contributor Login default texts rewritten with HWS Base Tools' building blocks; each links to the other, and the Editorial Guidelines link shows only when that page exists.
+- Other plugins' page links ([hws_page_link key="become_contributor"], [hws_if page="contributor_login"]) now find this plugin's pages through Hexa WP Core.
+- Bundles Hexa WP Core 3.40.1.
 
 ### 1.2.0
 
