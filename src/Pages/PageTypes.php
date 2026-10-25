@@ -20,6 +20,12 @@ final class PageTypes {
                 'slugs'       => [ 'become-a-contributor', 'write-for-us' ],
                 'description' => 'How to pitch and write for the publication.',
             ],
+            'contributor_login' => [
+                'label'       => 'Contributor Login',
+                'title'       => 'Contributor Login',
+                'slugs'       => [ 'contributor-login' ],
+                'description' => 'Where contributors sign in. The top bar of every publication links here.',
+            ],
         ];
     }
 

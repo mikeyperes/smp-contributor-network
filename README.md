@@ -48,6 +48,11 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 - **Use:** `[smp_contributor_network_page_template type="become_contributor"]`.
 - **Code:** `src/Pages/PageTypes.php`, `src/Pages/PagesModule.php`, `src/Pages/templates/become_contributor.html`.
 
+### Contributor Login page
+- **Does:** the page where contributors sign in (`/contributor-login/`), linked from the top bar of every publication. Signed out it shows WordPress's sign-in form and a forgot-password link; signed in it links to writing a new article and to the dashboard.
+- **Use:** `[smp_contributor_login]` (inside `[smp_contributor_network_page_template type="contributor_login"]`); `wp smp-contributor-pages ensure` publishes every missing Contributor Network page.
+- **Code:** `src/Pages/PageTypes.php`, `src/Pages/PagesModule.php`, `src/Pages/templates/contributor_login.html`.
+
 ## Internals
 
 - Admin page with Core tabs in groups: Overview; Program (Program, Pages); Operations (Update Center); Hexa Core. Filters `smp_contributor_network_dashboard_tabs` and `smp_contributor_network_render_dashboard_tab`; a tab loads only when opened (`src/AdminDashboard/AdminPage.php`).
@@ -61,6 +66,10 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 `wp eval-file tests/boot-smoke.php` boots the plugin without activating it and renders every tab.
 
 ## Changelog
+
+### 1.2.0
+
+- New Contributor Login page with the sign-in form, and `wp smp-contributor-pages ensure` to publish missing pages. Bundles Hexa WP Core 3.36.0.
 
 ### 1.1.0
 - Leadership Council moved in from SMP Verified Profiles: program settings and the older copy, the two user fields, `[contributor_network]`, `[display_profile_council_banner]`, the council checkout price and the dashboard apply link. Her Forward's address and product number are now settings.

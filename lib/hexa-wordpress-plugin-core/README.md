@@ -154,7 +154,7 @@
 - **Code:** `src/PluginUpdates/` (docs: `docs/updater.md`)
 
 ### Core package panel and fleet sync
-- **Does:** shows the bundled Core against Core on GitHub with an update button, and copies the newest verified Core into every Hexa plugin on the site after plugin installs, updates and activations.
+- **Does:** shows the bundled Core against Core on GitHub with an update button, and copies the newest verified Core into every Hexa plugin on the site after plugin installs, updates and activations. After copying it loads the home page once and puts every copy back when the site no longer loads (server error or WordPress's critical-error page).
 - **Use:** `$core = CorePackageConfig::from_core_root( <core root>, [ github_repo, github_branch, nonce_action, ajax_action_prefix ] )`, `( new CorePackageAjaxController( $core ) )->register()`, `( new CorePackagePanelRenderer( $core ) )->render()`; `CorePackageFleetSyncModule` runs the sync.
 - **Extend:** `hexa_plugin_core_package_synchronized`, `hexa_plugin_core_package_sync_failed`.
 - **Code:** `src/CorePackageUpdates/` (docs: `docs/core-package-runtime.md`)
@@ -226,8 +226,8 @@
 - **Code:** `src/Users/`
 
 ### Site structure
-- **Does:** the plugin's list of key pages, which page fills each, creating pages from templates, and building WordPress menus from them.
-- **Use:** `PageStructureManager` with the host's page blueprint, `SiteStructureRenderer::render( [ show_pages, show_menus ] )`, `SiteStructureAjaxController::register()`; `PageStructureMenuService`, `PageStructureTemplateService`.
+- **Does:** the plugin's list of key pages, which page fills each, creating pages from templates, placing each page under its parent (also a parent another plugin owns) with its old address redirecting, the facts each page needs, and building WordPress menus from them.
+- **Use:** `PageStructureManager` with the host's page blueprint (`parent`, `slugs` alternatives with `*`, `required_facts`, config `facts_getter`); `ensure_pages()` sets every page up in one call, `ensure_page( $key )` one, `resolve_page_id( $key )` finds a page from any plugin (filter `hexa_site_structure_page_id`), `missing_facts( $key )`, `PageStructureManager::place_under_parent()`, `PageRedirects`; `SiteStructureRenderer::render( [ show_pages, show_menus ] )`, `SiteStructureAjaxController::register()`; `PageStructureMenuService`, `PageStructureTemplateService`.
 - **Code:** `src/SiteStructure/` (docs: `docs/site-structure.md`)
 
 ### Schema tools
