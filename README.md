@@ -72,6 +72,10 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 
 ## Changelog
 
+### 1.3.4
+
+- Bundles Hexa WP Core 3.42.0.
+
 ### 1.3.3
 
 - Bundles Hexa WP Core 3.41.1.
