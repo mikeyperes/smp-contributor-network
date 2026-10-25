@@ -55,8 +55,8 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 
 ### Page links from other plugins
 
-- **What:** HWS Base Tools and SMP Publication Integration pages can link to Become a Contributor and Contributor Login with  and .
-- **Code:**  ( filter).
+- **What:** HWS Base Tools and SMP Publication Integration pages can link to Become a Contributor and Contributor Login with `[hws_page_link]` and `[hws_if page]`.
+- **Code:** `src/Pages/PagesModule.php` (`hexa_site_structure_page_id` filter).
 
 ## Internals
 
