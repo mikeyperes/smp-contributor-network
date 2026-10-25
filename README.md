@@ -72,6 +72,11 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 
 ## Changelog
 
+### 1.4.0
+
+- Contributors sign in on the site's own Hexa Admin sign-in page (`wp_login_url()`); a Contributor Login page is used only when one is linked, and none is created. `[smp_contributor_sign_in_link text="..."]` links there, and Become a Contributor uses it.
+- Bundles Hexa WP Core 3.44.0.
+
 ### 1.3.6
 
 - Bundles Hexa WP Core 3.43.0.

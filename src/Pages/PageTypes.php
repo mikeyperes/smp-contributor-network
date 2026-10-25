@@ -24,9 +24,24 @@ final class PageTypes {
                 'label'       => 'Contributor Login',
                 'title'       => 'Contributor Login',
                 'slugs'       => [ 'contributor-login' ],
-                'description' => 'Where contributors sign in. The top bar of every publication links here.',
+                'description' => 'Where contributors sign in: the site\'s own Hexa Admin sign-in page. A page is used only when one is linked here; none is created.',
+                'sign_in'     => true,
             ],
         ];
+    }
+
+    /**
+     * Where contributors sign in: the linked Contributor Login page when there is one, else the
+     * site's own sign-in page (Hexa Admin, HWS Base Tools' sign-in address, through wp_login_url()).
+     */
+    public static function sign_in_url(): string {
+        $page = self::page_id( 'contributor_login' );
+        return $page ? (string) get_permalink( $page ) : wp_login_url();
+    }
+
+    /** A page type that is a sign-in address, not a page this plugin creates. */
+    public static function is_sign_in( string $key ): bool {
+        return ! empty( self::all()[ $key ]['sign_in'] );
     }
 
     public static function exists( string $key ): bool {

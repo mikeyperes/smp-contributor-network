@@ -20,6 +20,7 @@ final class PagesModule implements ModuleInterface {
     public function register(): void {
         add_action( 'init', static fn() => add_shortcode( 'smp_contributor_network_page_template', [ self::class, 'render' ] ), 20 );
         add_action( 'init', static fn() => add_shortcode( 'smp_contributor_login', [ self::class, 'login_form' ] ), 20 );
+        add_action( 'init', static fn() => add_shortcode( 'smp_contributor_sign_in_link', [ self::class, 'sign_in_link' ] ), 20 );
         // Other plugins' page links ([hws_page_link], [hws_if page]) find this plugin's pages through Hexa WP Core.
         add_filter( 'hexa_site_structure_page_id', static fn( $id, string $key ): int => (int) $id > 0 ? (int) $id : PageTypes::page_id( $key ), 20, 2 );
         if ( defined( 'WP_CLI' ) && WP_CLI && class_exists( '\WP_CLI' ) ) {
@@ -56,6 +57,12 @@ final class PagesModule implements ModuleInterface {
         return (string) preg_replace( '#<p>(?:\s|&nbsp;|<br\s*/?>)*</p>\s*#i', '', $html );
     }
 
+    /** [smp_contributor_sign_in_link text="Sign in"]: a link to where contributors sign in (PageTypes::sign_in_url()). */
+    public static function sign_in_link( $atts ): string {
+        $atts = shortcode_atts( [ 'text' => 'Sign in' ], (array) $atts, 'smp_contributor_sign_in_link' );
+        return '<a href="' . esc_url( PageTypes::sign_in_url() ) . '">' . esc_html( (string) $atts['text'] ) . '</a>';
+    }
+
     /** [smp_contributor_login]: WordPress's sign-in form, back to this page; when signed in, links to write and to the dashboard. */
     public static function login_form(): string {
         if ( is_user_logged_in() ) {
@@ -67,7 +74,8 @@ final class PagesModule implements ModuleInterface {
     /** The page for a page type, published from its template when missing. */
     public static function ensure_page( string $key ): int {
         $existing = PageTypes::page_id( $key );
-        if ( $existing || ! PageTypes::exists( $key ) ) {
+        // Contributor Login is the site's Hexa Admin sign-in page: linked if a page exists, never created.
+        if ( $existing || ! PageTypes::exists( $key ) || PageTypes::is_sign_in( $key ) ) {
             return $existing;
         }
         $type = PageTypes::all()[ $key ];
@@ -88,6 +96,9 @@ final class PagesModule implements ModuleInterface {
         $existing = PageTypes::page_id( $key );
         if ( $existing ) {
             return [ 'page_id' => $existing, 'url' => get_permalink( $existing ), 'created' => false ];
+        }
+        if ( PageTypes::is_sign_in( $key ) ) {
+            throw new \InvalidArgumentException( 'Contributors sign in on the site\'s Hexa Admin sign-in page; no page is created.' );
         }
         $type = PageTypes::all()[ $key ];
         $id   = wp_insert_post(

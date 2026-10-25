@@ -20,6 +20,8 @@ final class PagesTab {
             echo '<ul>';
             if ( $id ) {
                 echo '<li>Page: <a href="' . esc_url( (string) get_permalink( $id ) ) . '" target="_blank" rel="noopener">' . esc_html( (string) get_permalink( $id ) ) . '</a> (' . esc_html( (string) get_post_status( $id ) ) . ')</li>';
+            } elseif ( PageTypes::is_sign_in( $key ) ) {
+                echo '<li>Sign-in: the site\'s Hexa Admin sign-in page, <a href="' . esc_url( PageTypes::sign_in_url() ) . '" target="_blank" rel="noopener">' . esc_html( PageTypes::sign_in_url() ) . '</a>. No page is needed.</li>';
             } else {
                 echo '<li>Page: none yet. <button type="button" class="button smp-cn-create-page" data-type="' . esc_attr( $key ) . '">Create page</button></li>';
             }
