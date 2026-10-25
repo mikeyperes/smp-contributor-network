@@ -4,7 +4,7 @@ Plugin Name: SMP Contributor Network
 Description: Contributor Network (leadership council) program for Scale My Publication sites.
 Author: Michael Peres
 Plugin URI: https://github.com/mikeyperes/smp-contributor-network
-Version: 1.3.4
+Version: 1.3.5
 Requires at least: 6.0
 Requires PHP: 8.1
 Text Domain: smp-contributor-network
