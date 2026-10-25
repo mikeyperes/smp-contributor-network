@@ -72,6 +72,10 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 
 ## Changelog
 
+### 1.3.3
+
+- Bundles Hexa WP Core 3.41.1.
+
 ### 1.3.2
 
 - Page templates use HWS Base Tools' site-neutral `[hws_site]` shortcode.

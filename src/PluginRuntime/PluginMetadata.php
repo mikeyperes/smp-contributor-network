@@ -11,7 +11,7 @@ final class PluginMetadata {
     public const MAIN_FILE = 'smp-contributor-network.php';
     public const GITHUB_REPOSITORY = 'mikeyperes/smp-contributor-network';
     public const GITHUB_BRANCH = 'main';
-    public const VERSION = '1.3.2';
+    public const VERSION = '1.3.3';
 
     public static function root_path(): string {
         return dirname( __DIR__, 2 );
