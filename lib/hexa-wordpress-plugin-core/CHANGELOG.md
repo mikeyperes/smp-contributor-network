@@ -3,6 +3,18 @@
 Release notes moved from the README (3.31.1). Newest first; each Core release adds its line here.
 
 
+Version 3.47.0: API key fields for every plugin (`src/ApiKeys/`): save, remove and test a service key, stored encrypted, with the service's setup steps; a general key test (`ApiKeyVerifier`, `HttpApiKeyVerifier`) that services extend. HWS Base Tools' Stripe keys are the first user.
+
+Version 3.46.2: on phones the media-layout lightbox shows its Previous, count, Next and close controls as a solid strip above the photo instead of floating over it, so the count stays readable and the photo uncovered.
+
+Version 3.46.1: the item lightbox starts loading the neighbouring items as soon as an item opens (the one before, the one after, and two ahead in the stepping direction), instead of after the shown item finishes, so steps through a slow server stay instant.
+
+Version 3.46.0: stepping in the item lightbox is smooth: the shown item stays until the next is fetched and its photo decoded, then fades through to it (a phone sheet eases to its new height), and the items either side load in the background. Previous and Next are worded buttons with the item's place between them (new label `lightbox_count`, `%1$s of %2$s`), replacing the bare arrow icons.
+
+Version 3.45.0: the item lightbox gets Previous and Next buttons (and left and right arrow keys) that step through the component's other dialog links in page order, and keeps the open item in the address as `?hlb=<post ID>`, updated on every step, so a reload or shared link reopens it; closing removes it. New labels `lightbox_prev` and `lightbox_next`. The calendar ignores `hlb` when it compares addresses.
+
+Version 3.44.2: the live search box shows its result count as `<b class="hls-count">` inside the status line (so a design can style the number), keeps that markup when results update, and after each update also refreshes every element marked `data-hls-sync` (for example a heading that names the search term) from the new page.
+
 Version 3.44.1: `apply_template()` takes a page built with Elementor out of builder mode (removes `_elementor_edit_mode`), so the default text shows instead of the old Elementor design; the Elementor design stays saved on the page.
 
 Version 3.44.0 adds custom-design pages: a page definition with `'design' => 'custom'` is still found, linked and placed under its parent, but `create_page()` makes it an empty draft and `apply_template()` refuses it, so the site's own design (an Elementor build) provides its content. `PageStructureManager::is_custom_design()`; the page list shows a Custom design tag and, in Page details, a note instead of the default text and template.

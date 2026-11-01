@@ -18,6 +18,11 @@
 
 ## Features
 
+- Search filter chips: opt-in `filter_layout="chips"` renders accessible single-choice radio chips, including All, with the same markup under `style="none"`. Dropdowns remain the default. [Markup](docs/search-filter-chips.md).
+
+- Automatic and direct plugin updates resolve a published stable release tag, verify its version, and never fall back to a branch archive.
+
+
 ### Plugin bootstrap and context
 - **Does:** loads one Core copy per site (the newest bundled one among all plugins), builds the plugin's context and boots its modules.
 - **Use:** `hexa_plugin_core_register_package( '<slug>', <core root> )`, then `new PluginContext( [ slug, basename, version, path, url, github_repo, admin_page, capability ] )` and `( new CoreBootstrap( $context ) )->add_module( $m )->boot()`. Modules implement `ModuleInterface` (or extend `RegisterMethodModule`). `CorePackageRuntime::report()` shows which Core copy was selected and any integrity issues. See [Setup protocol](#setup-protocol).
@@ -61,6 +66,11 @@
 - **Does:** admin AJAX actions with nonce and capability checks, request parsing, error handling and JSON replies done once.
 - **Use:** `( new AjaxActionRegistry( [ capability, nonce_action, nonce_field ] ) )->register( [ 'action' => [ 'callback' => fn( AjaxRequest $r ) => [...] ] ] )`; `AjaxRequest::key()` and friends read input; throw `AjaxFailure` for a clean error.
 - **Code:** `src/WpAdminAjax/` (docs: `docs/wp-admin-ajax.md`)
+
+### API key fields
+- **Does:** a real field for any service's API key: save (encrypted through the credential store), remove, and a Test key button that calls the service and says plainly whether the key is active, rejected or unreachable, with the service's own setup steps under it. Saving refuses a key the test rejects.
+- **Use:** `ApiKeyFields::register( new ApiKeyField( id, slug, key_name, label, verifier, steps[], placeholder, help_url, help_label ) )`, then `ApiKeyFields::render( id )` on the screen and `ApiKeyFields::value( id )` in code. A verifier implements `ApiKeyVerifier::verify( string ): ApiKeyCheck`; `HttpApiKeyVerifier` covers services with one read-only endpoint (set `endpoint()`, and optionally `headers()`, `shape_error()`, `on_active()`).
+- **Code:** `src/ApiKeys/` (AJAX actions `hexa_core_api_key_save`, `_delete`, `_test`)
 
 ### Activity log
 - **Does:** a collapsible dark log of what a job did, kept for the page, for a while (transient) or until cleared (option).
@@ -247,7 +257,7 @@
 - **Code:** `src/FaqSets/` (docs: `docs/faq-sets.md`)
 
 ### Search
-- **Does:** the one search for every use: a search box with filters (type, category, tag, author, any taxonomy or custom field) and, for people or host directories, sorts. Results show in one of two places: the page's own list narrows in place (category, tag, author, search and post type pages, or any Elementor loop marked `hexa-listing-results`, such as a homepage section), or the box renders its own result cards. Typing and ticking refresh the results without a page reload; the results dim with one shared spinner while loading; filters take several choices and show counts; cards load more on scroll with a Load more link. Every state is a plain URL. Also draws the header search box (a magnifying glass that opens a field in place, or an always-open field), which goes to the search page.
+- **Does:** the one search for every use: a search box with filters (type, category, tag, author, any taxonomy or custom field) and, for people or host directories, sorts. Results show in one of two places: the page's own list narrows in place (category, tag, author, search and post type pages, or any Elementor loop marked `hexa-listing-results`, such as a homepage section), or the box renders its own result cards. Typing and ticking refresh the results without a page reload; the results dim with one shared spinner while loading; filters take several choices and show counts; cards load more on scroll with a Load more link. Every state is a plain URL. The status line marks its count as `<b class="hls-count">` for styling, and any element marked `data-hls-sync` (such as a heading naming the search term) is refreshed with the results. Also draws the header search box (a magnifying glass that opens a field in place, or an always-open field), which goes to the search page.
 - **Use:** register a profile with `SearchRegistry::register( 'id', [...] )` (add `render_item` for cards, `source` = `users` with `roles` for people), then `[hexa_search id="id"]` or `SearchBox::render( 'id', $options )`; `SearchBox::header( $options )` for the header. HWS Base Tools ships `[hws_search]` and `[hws_search_box]`. Add `SearchModule` to the host bootstrap.
 - **Extend:** `hexa_plugin_core_search_target`, `hexa_plugin_core_search_context_args`, `hexa_plugin_core_search_post_types`, `hexa_plugin_core_search_register`.
 - **Code:** `src/Search/`. Markup and styling: HWS Base Tools `docs/hws-search.md`; API: `docs/hexa-search.md`.
@@ -295,7 +305,7 @@
 - **Code:** `src/Map/` (docs: `docs/map.md`)
 
 ### Public components
-- **Does:** shared pieces for public pages: the image zoom viewer (hover preview, full-screen pinch zoom), item links and the in-page lightbox, cache-safe "5 min ago" times, and the profile store and request helpers behind Search, Calendar and Map.
+- **Does:** shared pieces for public pages: the image zoom viewer (hover preview, full-screen pinch zoom), item links and the in-page lightbox (worded Previous and Next with the item's place, stepping smoothly through the component's items, the open item kept in the address as `?hlb=<post ID>` so a reload reopens it), cache-safe "5 min ago" times, and the profile store and request helpers behind Search, Calendar and Map.
 - **Use:** `ImageZoom::html( $attachment_id, $options )`; `ItemLink::attributes()` with `link_behavior` = `page`/`new_tab`/`lightbox` (REST `hexa-plugin-core/v1/lightbox/{component}/{profile}/{post}`); `RelativeTime::html( $timestamp )`; `ProfileStore`, `ProfileValues`, `PublicComponent`.
 - **Code:** `src/PublicComponents/` (docs: `docs/image-zoom.md`, `docs/item-link.md`, `docs/relative-time.md`)
 

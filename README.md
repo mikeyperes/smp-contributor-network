@@ -3,7 +3,7 @@
 > Feature base for HWS Skills. Read before building on this plugin; use or
 > extend these features instead of rebuilding them.
 
-**Purpose:** runs a publication's contributor network program (on Her Forward, the Her Forward Leadership Council) and its Become a Contributor page. **Admin:** WP Admin → Contributor Network. **Depends on:** WooCommerce for the council price (optional); SMP Publication Integration for the publication name in the Become a Contributor template; HexaWP Core is bundled.
+**Purpose:** runs a publication's contributor network program (on Her Forward, the Her Forward Leadership Council) and its Become a Contributor page. **Admin:** WP Admin → Contributor Network. **Depends on:** HWS Base Tools' Payments (Stripe) for council payments (optional, off by default); SMP Publication Integration for the publication name in the Become a Contributor template; HexaWP Core is bundled.
 
 Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base Tools as the reference build.
 
@@ -32,10 +32,9 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 - **Style:** `.display_profile_council_banner`; HTML in [docs/front-end-html.md](docs/front-end-html.md).
 - **Code:** `src/Council/CouncilShortcodes.php`.
 
-### Council price at checkout
-- **Does:** when a signed-in user with a council price buys the council product, the cart uses their price.
-- **Switch:** Program → Council product; per user, Price Leadership Council.
-- **Code:** `src/Council/CouncilCheckout.php` (`woocommerce_before_calculate_totals`).
+### Council payments (Stripe)
+- **Does:** with council payments on (Program tab, off by default) and Stripe ready in HWS Base Tools, a member with a "Price Leadership Council" who is not yet a member sees "Pay council membership" in the Verified Profiles dashboard. They pay that amount through Stripe once, monthly or yearly (setting); the paid checkout sets "Is Council Member", and a cancelled subscription clears it. WooCommerce is no longer used; the old council product setting is ignored.
+- **Code:** `src/Council/CouncilCheckout.php`, `src/Council/CouncilPayments.php` (option `smp_cn_payments`).
 
 ### Council apply link in the profile dashboard
 - **Does:** adds "Apply for <program name>" linking to the Application page to the Verified Profiles dashboard's Additional Links.
@@ -71,6 +70,9 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 `wp eval-file tests/boot-smoke.php` boots the plugin without activating it and renders every tab.
 
 ## Changelog
+
+### 1.5.0
+- Council payments run through HWS Base Tools' one Stripe connection instead of WooCommerce: each member pays their own council price once, monthly or yearly, and the paid checkout makes them a council member (a cancelled subscription ends it). Off by default; set on the Program tab. Bundles Hexa WP Core 3.47.0.
 
 ### 1.4.1
 

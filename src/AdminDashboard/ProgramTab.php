@@ -7,7 +7,7 @@ use SMP\ContributorNetwork\Council\CouncilFields;
 use SMP\ContributorNetwork\Council\CouncilSettings;
 use SMP\ContributorNetwork\PluginRuntime\PluginMetadata;
 
-/** Program settings: name, email, logo, banner text, council product and pages. */
+/** Program settings: name, email, logo, banner text, pages and council payments. */
 final class ProgramTab {
     public static function render(): void {
         $return = admin_url( 'admin.php?page=' . PluginMetadata::ADMIN_PAGE_SLUG . '&tab=program&updated=1' );
@@ -29,7 +29,24 @@ final class ProgramTab {
                 'submit_value' => 'Save program settings',
             ]
         );
+        echo self::payments_form();
         echo '</div>';
+    }
+
+    private static function payments_form(): string {
+        $s     = \SMP\ContributorNetwork\Council\CouncilPayments::settings();
+        $ok    = \SMP\ContributorNetwork\Council\CouncilPayments::stripe_available();
+        $ready = $ok && \HWS\BaseTools\Payments\Stripe::ready();
+        $opt   = static fn( string $v, string $label ): string => '<option value="' . $v . '"' . selected( $s['interval'], $v, false ) . '>' . $label . '</option>';
+
+        return '<h3>Council payments</h3>'
+            . '<p>Members pay their own "Price Leadership Council" (on their user profile) through the one Stripe connection in HWS Base Tools. Off by default. ' . ( ! $ok ? '<strong>HWS Base Tools 13.46 or newer is needed.</strong>' : ( $ready ? 'Stripe is connected.' : '<strong>Stripe is off or has no key yet.</strong>' ) . ' <a href="' . esc_url( admin_url( 'options-general.php?page=hws-core-tools&tab=payments' ) ) . '">Open Payments in HWS Base Tools</a>' ) . '</p>'
+            . '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">' . wp_nonce_field( 'smp_cn_payments_save', '_wpnonce', true, false )
+            . '<input type="hidden" name="action" value="smp_cn_payments_save">'
+            . '<p><label><input type="checkbox" name="enabled" value="1"' . checked( $s['enabled'], true, false ) . '> Take council payments through Stripe</label></p>'
+            . '<p><label>Members pay <select name="interval">' . $opt( 'once', 'once' ) . $opt( 'month', 'every month' ) . $opt( 'year', 'every year' ) . '</select></label></p>'
+            . '<p><label>Currency <input type="text" name="currency" value="' . esc_attr( $s['currency'] ) . '" size="4"></label></p>'
+            . '<p><button type="submit" class="button button-primary">Save council payments</button></p></form>';
     }
 
     private static function banner_sample(): string {
