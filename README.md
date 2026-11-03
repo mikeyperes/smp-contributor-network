@@ -14,6 +14,8 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 
 ## Features
 
+- The canonical page catalog includes contributor pages, the existing Hexa Admin sign-in address, and linked council landing, application and badges pages from CouncilSettings.
+
 ### Program settings
 - **Does:** one place for the program's name, email, logo, member banner text, council product, the three council pages (council, application, badges), the profile loop templates and profile pages. Nothing site-specific is written in the code.
 - **Switch:** WP Admin → Contributor Network → Program. Stored as ACF-layout options `options_contributor_network_*` (field keys kept from Verified Profiles, so earlier values still load). The older second copy (`contributor_network_program_name|email|logo`) is shown on the same tab and still read as a fallback for the program name.
@@ -71,7 +73,7 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 
 ## Changelog
 
-### 1.5.0
+### 1.5.1
 - Council payments run through HWS Base Tools' one Stripe connection instead of WooCommerce: each member pays their own council price once, monthly or yearly, and the paid checkout makes them a council member (a cancelled subscription ends it). Off by default; set on the Program tab. Bundles Hexa WP Core 3.47.0.
 
 ### 1.4.1

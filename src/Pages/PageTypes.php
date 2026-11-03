@@ -30,6 +30,23 @@ final class PageTypes {
         ];
     }
 
+    /** Canonical catalog. Council addresses are existing settings, never new pages. */
+    public static function definitions(): array {
+        $pages = self::all();
+        foreach ( $pages as $key => &$page ) {
+            $id = self::page_id( $key );
+            $url = self::is_sign_in( $key ) ? self::sign_in_url() : ( $id ? get_permalink( $id ) : '' );
+            $page += [ 'slug' => $url ? trim( (string) wp_parse_url( $url, PHP_URL_PATH ), '/' ) : $page['slugs'][0], 'url' => $url, 'kind' => self::is_sign_in( $key ) ? 'sign_in' : 'page', 'parent' => '', 'design' => 'text', 'enabled_by_default' => true, 'conditions' => [], 'content_source' => self::is_sign_in( $key ) ? 'Hexa Admin sign-in through wp_login_url()' : 'Linked page and contributor template' ];
+        }
+        unset( $page );
+        foreach ( [ 'landing' => 'Leadership Council', 'application' => 'Application', 'badges' => 'Badges' ] as $field => $title ) {
+            $id = \SMP\ContributorNetwork\Council\CouncilSettings::page_id( $field );
+            $url = $id ? (string) get_permalink( $id ) : '';
+            $pages['council_' . $field] = [ 'title' => $id ? get_the_title( $id ) : $title, 'slug' => $url ? trim( (string) wp_parse_url( $url, PHP_URL_PATH ), '/' ) : '', 'url' => $url, 'slugs' => [], 'parent' => 'landing' === $field ? '' : 'council_landing', 'kind' => 'page', 'design' => 'custom', 'enabled_by_default' => false, 'conditions' => [ 'contributor_network.council_pages.' . $field ], 'content_source' => 'CouncilSettings::page_id(' . $field . ')', 'title_source' => 'Linked page title and CouncilSettings::program_name', 'slug_source' => 'Linked council page permalink' ];
+        }
+        return $pages;
+    }
+
     /**
      * Where contributors sign in: the linked Contributor Login page when there is one, else the
      * site's own sign-in page (Hexa Admin, HWS Base Tools' sign-in address, through wp_login_url()).
