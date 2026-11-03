@@ -74,6 +74,10 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 ## Changelog
 
 ### 1.5.1
+
+- Adds settings-driven contributor and council entries to the canonical page catalog.
+
+### 1.5.0
 - Council payments run through HWS Base Tools' one Stripe connection instead of WooCommerce: each member pays their own council price once, monthly or yearly, and the paid checkout makes them a council member (a cancelled subscription ends it). Off by default; set on the Program tab. Bundles Hexa WP Core 3.47.0.
 
 ### 1.4.1
