@@ -14,6 +14,8 @@ Built on the Hexa plugin foundation (`hexa-plugin-guidelines`), with HWS Base To
 
 ## Features
 
+- Bundles Hexa WP Core 3.64.0 with its independent field engine. Contributor settings retain their existing keys and values.
+
 - The canonical page catalog includes contributor pages, the existing Hexa Admin sign-in address, and linked council landing, application and badges pages from CouncilSettings.
 
 ### Program settings
